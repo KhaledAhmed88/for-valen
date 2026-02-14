@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For Hagar ❤️</title>
+<style>
+  body{
+    margin:0; min-height:100vh; display:grid; place-items:center;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: radial-gradient(circle at 20% 20%, #ffe3f1, #fff);
+    overflow:hidden;
+  }
+  .card{
+    width:min(920px,92vw);
+    background:rgba(255,255,255,.75);
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:24px;
+    padding:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,.10);
+    backdrop-filter: blur(10px);
+    text-align:center;
+    position:relative;
+  }
+.card{
+    transform: scale(0.95);
+}
+  img{
+    width: auto;
+    max-width: 420px;      /* صغرنا العرض */
+    max-height: 55vh;      /* صغرنا الطول */
+    object-fit: contain;   /* من غير قص */
+    border-radius: 20px;
+    border: 3px solid white;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    display:block;
+    margin: 0 auto 15px auto;
+    transition: transform .3s ease;
+}
+  h1{
+    margin:16px 0 6px;
+    font-size:44px;
+    letter-spacing:1px;
+    color:#ff2d75;
+    text-shadow:0 0 18px rgba(255,45,117,.25);
+  }
+  h2{
+    margin:6px 0 0;
+    font-size:26px;
+    color:#1f1f1f;
+  }
+  p{ margin:8px 0 0; color:rgba(0,0,0,.65); }
+
+  .askBox{
+    margin:18px auto 0;
+    width:min(520px,90vw);
+    border:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.75);
+    border-radius:18px;
+    padding:14px;
+    position:relative;
+    min-height:170px;
+  }
+  .btnRow{ position:relative; height:95px; margin-top:12px; }
+  button{
+    border:0; padding:12px 16px; border-radius:14px;
+    font-weight:800; cursor:pointer;
+    transition: transform .12s ease;
+    user-select:none;
+  }
+  button:active{ transform:scale(.98); }
+  .yes{
+    background: linear-gradient(135deg, #ff3f8a, #ff7aa8);
+    color:white;
+    box-shadow:0 14px 28px rgba(255,63,138,.28);
+  }
+  .no{
+    background: rgba(0,0,0,0.06);
+    color: rgba(0,0,0,0.75);
+    border: 1px solid rgba(0,0,0,0.08);
+    position:absolute;
+    left:140px; top:0px;
+  }
+  .status{ margin-top:10px; font-weight:700; color:rgba(0,0,0,.6); }
+
+  /* Hearts */
+  .heart{
+    position:fixed;
+    top:-20px;
+    left:0;
+    font-size:18px;
+    opacity:.65;
+    animation: fall 6s linear forwards;
+    pointer-events:none;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh) rotate(360deg); opacity:.9; }
+  }
+
+  /* Modal */
+  .overlay{
+    position:fixed; inset:0; display:none; place-items:center;
+    background:rgba(0,0,0,.45); padding:18px;
+  }
+  .modal{
+    width:min(560px,94vw);
+    background:white; border-radius:22px;
+    padding:18px; text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+  }
+  .close{
+    margin-top:10px;
+    background: rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.8);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <!-- IMPORTANT: rename your image to photo.jpg or change src -->
+  <img src="file.jpg" alt="Khaled & Hagar"
+       onerror="this.style.display='none'; document.getElementById('imgErr').style.display='block';" />
+
+  <div id="imgErr" style="display:none; padding:16px; border:1px dashed rgba(0,0,0,.25); border-radius:16px;">
+    Image not found 😅<br/>
+    Put your image next to <b>index.html</b> and name it <b>photo.jpg</b><br/>
+    (Or change <b>src</b> in the code to your real filename)
+  </div>
+
+  <h1>Hagar ❤️</h1>
+  <h2>Would you be my Valentine?</h2>
+  <p>Click “Yes” if you’re sweet… try “No” if you can catch it 😈</p>
+
+  <div class="askBox" id="askBox">
+    <div class="btnRow">
+      <button class="yes" id="yesBtn">Yes 💖</button>
+      <button class="no" id="noBtn">No 🙃</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2>Yesss! 🎉💘</h2>
+    <p>Hagar, you just made my whole year 😄</p>
+    <button class="close" id="closeBtn">Close</button>
+  </div>
+</div>
+
+<script>
+  const askBox = document.getElementById('askBox');
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const status = document.getElementById('status');
+  const overlay = document.getElementById('overlay');
+  const closeBtn = document.getElementById('closeBtn');
+
+  function moveNo(){
+    const r = askBox.getBoundingClientRect();
+    const pad = 14;
+    const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
+    const x = Math.max(pad, Math.min(r.width - w - pad, Math.random()*(r.width - w)));
+    const y = Math.max(pad, Math.min(r.height - h - pad, Math.random()*(r.height - h)));
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  noBtn.addEventListener('mouseenter', () => { status.textContent="Nope 😂"; moveNo(); });
+  noBtn.addEventListener('click', (e) => { e.preventDefault(); status.textContent="Nice try 😄"; moveNo(); });
+  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); status.textContent="Hehe 😈"; moveNo(); }, {passive:false});
+
+  yesBtn.addEventListener('click', () => {
+    status.textContent="YAAAAAY 🎉";
+    overlay.style.display="grid";
+  });
+
+  closeBtn.addEventListener('click', () => overlay.style.display="none");
+  overlay.addEventListener('click', (e) => { if(e.target===overlay) overlay.style.display="none"; });
+
+  // falling hearts
+  setInterval(() => {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = '❤️';
+    h.style.left = (Math.random()*100) + 'vw';
+    h.style.fontSize = (12 + Math.random()*18) + 'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 6000);
+  }, 350);
+
+  moveNo();
+</script>
+
+</body>
+</html>
